@@ -19,16 +19,16 @@ $("#off-maaike").click(function(){
 
 // leander
 
-$("#on-leander").click(function(){
-    $.get("http://caffeine-works.nl/iot/index.php",
+$("#on-robert").click(function(){
+    $.get("http://robertspier.nl/hva/iot/index.php",
     {
         light: "on"
     },
     function(data, status){
     });
 });
-$("#off-leander").click(function(){
-    $.get("http://caffeine-works.nl/iot/index.php",
+$("#off-robert").click(function(){
+    $.get("http://robertspier.nl/hva/iot/index.php",
     {
         light: "off"
     },
@@ -44,7 +44,7 @@ $("#on-linda").click(function(){
         light: "on"
     },
     function(data, status){
-    	console.log(data + status)
+        console.log(data + status)
     });
 });
 $("#off-linda").click(function(){
@@ -53,7 +53,7 @@ $("#off-linda").click(function(){
         light: "off"
     },
     function(data, status){
-    	console.log(data + status)
+        console.log(data + status)
     });
 });
 
@@ -65,7 +65,7 @@ $("#on-all").click(function(){
         light: "on"
     },
     function(data, status){
-    	console.log(data + status)
+        console.log(data + status)
     });
     $.get("http://www.maaikehek.nl/iot/index.php",
     {
@@ -74,6 +74,18 @@ $("#on-all").click(function(){
     function(data, status){
     });
     $.get("http://caffeine-works.nl/iot/index.php",
+    {
+        light: "on"
+    },
+    function(data, status){
+    });
+    $.get("http://robertspier.nl/hva/iot/index.php",
+    {
+        light: "on"
+    },
+    function(data, status){
+    });
+    $.get("http://www.maaikehek.nl/iot/index.php",
     {
         light: "on"
     },
@@ -87,7 +99,7 @@ $("#off-all").click(function(){
         light: "off"
     },
     function(data, status){
-    	console.log(data + status)
+        console.log(data + status)
     });
     $.get("http://www.maaikehek.nl/iot/index.php",
     {
@@ -101,5 +113,16 @@ $("#off-all").click(function(){
     },
     function(data, status){
     });
+    $.get("http://robertspier.nl/hva/iot/index.php",
+    {
+        light: "off"
+    },
+    function(data, status){
+    });
+    $.get("http://www.maaikehek.nl/iot/index.php",
+    {
+        light: "off"
+    },
+    function(data, status){
+    });
 });
-
