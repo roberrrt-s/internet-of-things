@@ -35,7 +35,7 @@ void setup() {
 
 void loop() {
 
-  HTTPClient http;
+HTTPClient http;
 
  http.begin("http://robertspier.nl/hva/iot/lampje.txt"); 
  int httpCode = http.GET();        

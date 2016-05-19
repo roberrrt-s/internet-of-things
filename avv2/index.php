@@ -60,7 +60,6 @@ else if ($light == "off") {
             }
             a {
                 text-decoration: none;
-                margin: .5em;
             }
             .turn {
                 font-family: 'Lato';
@@ -113,8 +112,8 @@ else if ($light == "off") {
             <button id="on-robert" class="on"><a href="?light=on" class="aOn">click on robert</a></button>
         </div>
         <div>
-            <button id="off-all" class="off"><a href="?light=off" class="aOff">click off for all</a></button>
-            <button id="on-all" class="on"><a href="?light=on" class="aOn">click on for all</a></button>
+            <a href="?light=off" class="aOff"><button id="off-all" class="off">click off for all</button></a>
+            <a href="?light=on" class="aOn"><button id="on-all" class="on">click on for all</button></a>
         </div>
     </div>
 
