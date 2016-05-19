@@ -90,7 +90,7 @@ var initMap = function() {
 	});
 
 	var marker = new google.maps.Marker({
-	    position: {lat: 52.370216, lng: 4.895168},
+	    position: {lat: 52.370051, lng: 4.890633},
 	    map: map,
 	    animation: google.maps.Animation.DROP,
     	title: 'Current location',
