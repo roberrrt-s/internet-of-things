@@ -39,6 +39,8 @@ https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/installing-the-e
 
 ###### Visualisation of the setup
 
+![alt tag](https://i.gyazo.com/eee8337f0a680d5754f6509f7a6c5fc2.png)
+
 ##### Back-end (NodeMCU)
 
 To start, we'll have to upload the proper code to connect the NodeMCU to your network, before the setup, we'll declare the global variables containing this data:
