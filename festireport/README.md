@@ -142,7 +142,19 @@ String data = "pot=" + conv;
 // Add delay 
 delay(5000);
 ```
+ 
+Remember, make sure to change the 'robertspier.nl' values into your own server, otherwise you'll be uploading to mine, which isn't possible anymore since I removed the files from there.
 
 ##### Front-end (Server)
+
+I have divided my client side into 3 folders.
+
+ - Input (used to catch NodeMCU post requests)
+ - Output (used by the NodeMCU to switch LEDs)
+ - Dashboard (for oversight of the application)
+
+![alt tag](https://i.gyazo.com/1804237df25640848bcb0f6d9cd8a681.png)
+
+##### Structural oversight
 
 ##### Conclusion
