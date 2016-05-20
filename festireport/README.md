@@ -1,11 +1,11 @@
 # Festireport
 #### A toolkit to develop your own monitoring system for crowded area's
 
-##### Introduction
+#### Introduction
 
 Festireport is an experimental toolkit in discovering a way to measure the amount and intensity of people at large gatherings (such as festivals). It involves a combination of sensors, a dashboard and a small NodeMCU chip that uses the sensors to measure several forms of data. This prototype will not make use of all those sensors, but will depend on a potentiometer to establish an idea of a 'crowd'
 
-##### Requirements
+#### Requirements
 
  - Hardware
  	- NodeMCU ESP8266.
@@ -22,26 +22,26 @@ Festireport is an experimental toolkit in discovering a way to measure the amoun
  	- Text editor (I personally use Sublime)
  	- FTP client
 
-##### Setup
+#### Setup
 
 The setup is as following:
 
-###### Hardware
+#### Hardware
 
 Connect your NodeMCU to the breadboard, and connect the 3 leds through resistors to digital ports, make sure you connect the output to the ground (gnd). In addition, connect a 3.3v port to the input of your potentiometer, and the output to the ground (gnd). The middle port should be connected to your A0 (analog input).
 This is the most basic setup possible, it's recommended to use another sensor instead of the potentiometer to measure actual data, instead of faking it.
 
-###### Software
+#### Software
 
 Setup a webserver or buy hosting from an external provider (as I did, so I will not go into depth about setting it up). Make sure you have FTP access to the server so you can upload your files. In addition, install the Arduino SDK and make sure you can upload to ESP8266 boards. A guide can be found here:
 
 https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/installing-the-esp8266-arduino-addon
 
-###### Visualisation of the setup
+#### Visualisation of the setup
 
 ![alt tag](https://i.gyazo.com/eee8337f0a680d5754f6509f7a6c5fc2.png)
 
-##### Back-end (NodeMCU)
+#### Back-end (NodeMCU)
 
 To start, we'll have to upload the proper code to connect the NodeMCU to your network, before the setup, we'll declare the global variables containing this data:
 
@@ -145,7 +145,7 @@ delay(5000);
  
 Remember, make sure to change the 'robertspier.nl' values into your own server, otherwise you'll be uploading to mine, which isn't possible anymore since I removed the files from there.
 
-##### Front-end (Server)
+#### Front-end (Server)
 
 I have divided my client side into 3 folders.
 
@@ -155,6 +155,82 @@ I have divided my client side into 3 folders.
 
 ![alt tag](https://i.gyazo.com/1804237df25640848bcb0f6d9cd8a681.png)
 
-##### Structural oversight
+Fire.php is the PHP script that deals with the incoming requests, and places them in the corresponding txt or json file. As example:
 
-##### Conclusion
+```php
+<?php 
+    
+    // Grab value of the POST request
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+      $data = $_POST["pot"];
+
+      // Create timestamp and include both values into an array
+      $timestamp = new DateTime();
+      $time = $timestamp->format('Y-m-d H:i:s');
+      $message = array("time" => $time, "pot" => $data);
+
+      // Encode the array value, and place it into the json file
+      $jsonData = json_encode($message);
+      file_put_contents('output.json', $jsonData);
+    }
+
+    // Manual error logging
+    echo 'hello world!';
+?>
+```
+
+Information about the files can be found in the files themselves, I have commented all my front end code for clarification. the txt and json file are placeholder dummies, waiting for data to be transmitted beforehand.
+The dashboard is the main part of my front end. It contains a static HTML page that changes when data is added by the NodeMCU, or options are pressed.
+
+```javascript
+var checkNodeMcu = setInterval(function() {
+	// Perform a GET request to read the JSON file.
+	$.getJSON("../input/output.json", function(data) {
+
+		// If the time doesn't match with the last entry, replace it, and push the new variables into the list.
+		if(data.time !== current.time) {
+			current = data;
+			list.push(data);
+
+			// Redraw the line chart
+			drawLineChart();
+		}
+		else {
+			console.log('nothing new!')
+		}
+	})
+}, 2000)
+```
+
+checkNodeMcu is an interval that checks for new data every 2 seconds. When there is no data, the interval does nothing, but when new data is found, the data gets pushed into the array in which it saves the data, and makes a reference of it to check for new data.
+
+```javascript
+var checkCheckBoxes = setInterval(function() {
+
+	// Query for the checked radio box
+	var checked = document.querySelector('input[type="radio"]:checked');
+
+	// Invoke sendData() based on the radio button.
+	switch(checked.id) {
+		case "off":
+			sendData(0);
+		break;
+		case "low":
+			sendData(1);
+		break;
+		case "medium":
+			sendData(2);
+		break;
+		case "high":
+			sendData(3);
+		break;
+	}
+
+
+}, 1000);
+```
+checkCheckBoxes is an interval that checks if the user has changed any of the input fields on the dashboard, and sends data to the output folder based upon this. this data gets handled by the sendData function, which checks for the input, and sends a post request to the fire.php to handle it
+
+#### Structural oversight
+
+#### Conclusion
