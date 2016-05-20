@@ -53,26 +53,93 @@ WiFiClient client; // client as wifi
 Next up, we set up the basic setup to connect with the wifi network, and place the pins on input/output:
 
 ```c
-  
-  pinMode(D2, OUTPUT);
-  pinMode(D3, OUTPUT);
-  pinMode(D4, OUTPUT);
-  pinMode(A0, INPUT);
+pinMode(D2, OUTPUT);
+pinMode(D3, OUTPUT);
+pinMode(D4, OUTPUT);
+pinMode(A0, INPUT);
 
-  Serial.begin(9600);
+Serial.begin(9600);
 
-  Serial.print("Connecting to the WiFi");
+Serial.print("Connecting to the WiFi");
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
+while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+Serial.print(".");
+}
 
-  Serial.println("");
-  Serial.println("Connection established");
+Serial.println("");
+Serial.println("Connection established");
 ```
 
+At last, the loop, first we handle the LED status:
 
+```c
+HTTPClient http;
+
+http.begin("http://robertspier.nl/hva/festireport/output/data.txt"); 
+int httpCode = http.GET();        
+String payload = http.getString();
+
+// initialize a GET request to a txt file to see which LEDs should be lit.
+
+Serial.println(payload);
+
+if(payload == "0") {
+  digitalWrite(D2, LOW); 
+  digitalWrite(D3, LOW); 
+  digitalWrite(D4, LOW);
+}
+
+if(payload == "1") {
+  digitalWrite(D2, HIGH); 
+  digitalWrite(D3, LOW); 
+  digitalWrite(D4, LOW);
+  }
+if(payload == "2") {
+  digitalWrite(D2, HIGH); 
+  digitalWrite(D3, HIGH); 
+  digitalWrite(D4, LOW);
+}
+if(payload == "3") {
+  digitalWrite(D2, HIGH); 
+  digitalWrite(D3, HIGH); 
+  digitalWrite(D4, HIGH);
+}
+```
+
+Next up, we read the analog value of our pot meter, and post it to the server with a POST request.
+
+```c
+
+int pot = analogRead(A0);
+Serial.print("Pot: ");
+Serial.println(pot);
+
+String conv = String(pot);    
+String data = "pot=" + conv;
+
+ //check if and connect the nodeMCU to the server
+ if (client.connect(host, httpPort)) {
+   //make the POST headers and add the data string to it
+   client.println("POST /hva/festireport/input/fire.php HTTP/1.1");
+   client.println("Host: www.robertspier.nl:80");
+   client.println("Content-Type: application/x-www-form-urlencoded");
+   client.println("Connection: close");
+   client.print("Content-Length: ");
+   client.println(data.length());
+   client.println();
+   client.print(data);
+   client.println();
+   Serial.println(data);
+   Serial.println("Data send");
+
+ } else {
+   Serial.println("Something went wrong");
+ }
+
+// Add delay 
+delay(5000);
+```
 
 ##### Front-end (Server)
 
