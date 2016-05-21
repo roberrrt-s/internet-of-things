@@ -145,6 +145,8 @@ delay(5000);
  
 Remember, make sure to change the 'robertspier.nl' values into your own server, otherwise you'll be uploading to mine, which isn't possible anymore since I removed the files from there.
 
+When you upload the editted code, the NodeMCU should automatically connect with the network, and start transmitting data.
+
 #### Front-end (Server)
 
 I have divided my client side into 3 folders.
@@ -231,6 +233,6 @@ var checkCheckBoxes = setInterval(function() {
 ```
 checkCheckBoxes is an interval that checks if the user has changed any of the input fields on the dashboard, and sends data to the output folder based upon this. this data gets handled by the sendData function, which checks for the input, and sends a post request to the fire.php to handle it
 
-#### Structural oversight
-
 #### Conclusion
+
+When setting up this system, your front end will be supplied with a constant stream of data, and update when it parses this data. In addition, the NodeMCU reads feedback, and visually displays this as well. This system is a good set up for anyone that wishes to monitor crowds or people, and I encourage everyone to fork this repo, in order to continue developing this.
